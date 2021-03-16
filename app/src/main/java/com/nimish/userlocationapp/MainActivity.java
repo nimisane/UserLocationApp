@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                     checkLocationService();
                     Task<Location> currentLocationTask = fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, cancellationTokenSource.getToken());
+                    locationText.setText("");
+                    latitudeText.setText("");
+                    longitudeText.setText("");
                     progressBar.setVisibility(View.VISIBLE);
                     currentLocationTask.addOnCompleteListener(new OnCompleteListener<Location>() {
                         @Override
@@ -134,4 +137,9 @@ public class MainActivity extends AppCompatActivity {
         }).create().show();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        cancellationTokenSource.cancel();
+    }
 }
